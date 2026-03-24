@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование ПО | Справочник ИСиП-113</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- ФОНОВЫЕ ГИФКИ НА ПОЛОВИНУ ЭКРАНА --- */
+        .split-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            z-index: -1;
+        }
+
+        .bg-half {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Затемнение, чтобы гифки не слепили */
+        .bg-half::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); 
+        }
+
+        .bg-half img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Растягивает без искажений */
+        }
+
+        /* --- КОНТЕНТ ПО ЦЕНТРУ --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            background: rgba(15, 23, 42, 0.7); /* Матовый темный фон */
+            backdrop-filter: blur(15px); /* Размытие гифок под текстом */
+            min-height: 100vh;
+            padding: 40px 30px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+            border-right: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .subtitle { color: #94a3b8; font-size: 1.1rem; }
+
+        /* Аккордеон */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .accordion-checkbox { display: none; }
+
+        .accordion-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .accordion-header:hover { background: rgba(255, 255, 255, 0.05); }
+
+        .q-num {
+            background: #4f46e5;
+            width: 30px;
+            height: 30px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(0,0,0,0.3);
+        }
+
+        .accordion-checkbox:checked ~ .accordion-content {
+            max-height: 2000px;
+            padding: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .highlight { color: #818cf8; font-weight: bold; }
+        ul { margin-left: 20px; margin-top: 10px; }
+        li { margin-bottom: 8px; }
+
+        @media (max-width: 800px) {
+            .split-bg { flex-direction: column; }
+            .bg-half { width: 100%; height: 50%; }
+        }
+
+
+
+
+
+           :root {
+            --primary: #4f46e5;
+            --secondary: #818cf8;
+            --bg-dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+    
+
+
+        /* --- ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ГИФОК --- */
+        /* Теперь они идеально по углам и не мешают скроллу */
+        .gif-slot {
+            position: fixed;
+            width: 150px; /* Размер контейнера */
+            height:150px;
+            z-index: -1; /* Гифки ЗА контентом, чтобы не мешать кликам */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px; /* Мягкие углы */
+            opacity: 0.6; /* Делаем их полупрозрачными */
+            transition: opacity 0.3s;
+            filter: grayscale(50%); /* Слегка приглушаем цвета */
+        }
+        .gif-slot:hover {
+            opacity: 1; /* При наведении они становятся яркими */
+            filter: grayscale(0%);
+}
+        
+        /* Стилизация самой гифки внутри контейнера */
+        .gif-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Гифка заполняет блок, не растягиваясь */
+            display: block;
+        }
+
+        /* Позиционирование строго по углам с отступом */
+        .top-left { top: 15px; left: 15px; }
+        .top-right { top: 15px; right: 15px; }
+        .bottom-left { bottom: 15px; left: 15px; }
+        .bottom-right { bottom: 15px; right: 15px; }
+
+        /* Контейнер для контента */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative; /* Чтобы контент был поверх гифок */
+            z-index: 1; 
+        }
+
+        /* Шапка сайта */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .logo-area i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+            filter: drop-shadow(0 0 15px rgba(129, 140, 248, 0.4));
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle { color: var(--text-dim); font-size: 1.1rem; }
+
+        /* --- АККОРДЕОН (Выпадающий список) --- */
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .accordion-item {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* Эффект при наведении */
+        .accordion-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Скрываем стандартный чекбокс */
+        .accordion-checkbox { display: none; }
+
+        /* Заголовок вопроса */
+        .accordion-header {
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Номер вопроса */
+        .q-num {
+            background: var(--primary);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-right: 18px;
+            flex-shrink: 0; /* Чтобы номер не сжимался */
+        }
+
+        /* Текст вопроса */
+        .q-text { flex-grow: 1; font-weight: 500; }
+
+        /* Иконка стрелочки */
+        .accordion-icon {
+            transition: transform 0.3s ease;
+            color: var(--text-dim);
+            font-size: 1.1rem;
+        }
+
+        /* --- Контент ответа (скрыт по умолчанию) --- */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0, 1, 0, 1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Открытие контента при клике */
+        .accordion-checkbox:checked ~ .accordion-content {
+            max-height: 2000px; /* Большое значение для любых ответов */
+            transition: all 0.3s cubic-bezier(1, 0, 1, 0);
+        }
+
+        /* Поворот стрелочки при открытии */
+        .accordion-checkbox:checked ~ .accordion-header .accordion-icon {
+            transform: rotate(180deg);
+            color: var(--secondary);
+        }
+
+        /* Внутренние отступы текста ответа */
+        .inner-padding {
+            padding: 30px;
+            color: #cbd5e1;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        /* Стили для выделения текста */
+        .highlight { color: var(--secondary); font-weight: 600; }
+        .def-title { display: block; font-weight: 700; font-size: 1.1rem; margin-bottom: 10px; color: #fff; }
+
+        /* Стили для списков внутри ответов */
+        ul, ol { margin-left: 20px; margin-top: 10px; margin-bottom: 10px;}
+        li { margin-bottom: 8px; }
+        ul li { list-style-type: circle; }
+
+        /* Подвал */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            padding: 40px;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        /* --- АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ --- */
+        @media (max-width: 1100px) {
+            .gif-slot { 
+                width: 80px; 
+                height: 80px; 
+                border-radius: 8px;
+            }
+            .container { padding: 20px 10px; }
+            h1 { font-size: 1.8rem; }
+            .accordion-header { padding: 15px 18px; }
+            .q-num { margin-right: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="split-bg">
+        <div class="bg-half">
+            <img src="2_2.gif" alt="Left GIF">
+        </div>
+        <div class="bg-half">
+            <img src="1_2.gif" alt="Right GIF">
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-area"><i class="fas fa-terminal"></i></div>
+            <h1>Тестирование ПО</h1>
+        </header>
+
+        <main class="accordion">
+            
+            <div class="accordion-item">
+                <input type="checkbox" id="q1" class="accordion-checkbox">
+                <label for="q1" class="accordion-header">
+                    <div class="q-num">1</div>
+                    <div class="q-text">Жизненный цикл программного продукта</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Жизненный цикл программного продукта (ЖЦПП)</span>
+                        <p>Это период времени, начинающийся с момента принятия решения о необходимости создания программного продукта и заканчивающийся в момент его полного изъятия из эксплуатации.</p>
+                        <ul>
+                            <li>Маркетинговые исследования</li>
+                            <li>Формирование требований</li>
+                            <li>Проектирование</li>
+                            <li>Разработка (Кодирование)</li>
+                            <li>Тестирование и отладка</li>
+                            <li>Внедрение и эксплуатация</li>
+                            <li>Сопровождение</li>
+                            <li>Снятие с эксплуатации</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q2" class="accordion-checkbox">
+                <label for="q2" class="accordion-header">
+                    <div class="q-num">2</div>
+                    <div class="q-text">Модели разработки ПО</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Основные модели:</span>
+                        <ol>
+                            <li><span class="highlight">Каскадная ( Waterfall )</span>: Строгая последовательность этапов. Переход к следующему этапу только после завершения предыдущего.</li>
+                            <li><span class="highlight">V-образная</span>: Развитие каскадной модели, где на каждом этапе разработки закладываются тесты.</li>
+                            <li><span class="highlight">Итерационная</span>: Разработка идет "виткам" (итерациями), с постепенным наращиванием функционала.</li>
+                            <li><span class="highlight">Спиральная</span>: Акцент на анализе рисков на каждом витке.</li>
+                            <li><span class="highlight">Agile (гибкая)</span>: Семейство методологий (Scrum, Kanban), фокусирующихся на частых релизах и обратной связи.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q3" class="accordion-checkbox">
+                <label for="q3" class="accordion-header">
+                    <div class="q-num">3</div>
+                    <div class="q-text">Понятие тестирования ПО. Цели тестирования. Качество ПО</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Тестирование ПО</span>
+                        <p>Это процесс исследования программного обеспечения с целью получения информации о его качестве, проверки соответствия требованиям и выявления дефектов.</p>
+                        <ul>
+                            <li><span class="highlight">Основная цель:</span> Снизить риск отказа ПО при эксплуатации.</li>
+                            <li>Проверка соответствия требованиям (Verification).</li>
+                            <li>Убедиться, что продукт удовлетворяет нужды пользователя (Validation).</li>
+                            <li>Предоставление информации о качестве продукта заказчику.</li>
+                        </ul>
+                        <span class="def-title">Качество ПО</span>
+                        <p>Совокупность характеристик программного средства, относящихся к его способности удовлетворять установленные или предполагаемые потребности.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q4" class="accordion-checkbox">
+                <label for="q4" class="accordion-header">
+                    <div class="q-num">4</div>
+                    <div class="q-text">Принципы тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">7 основных принципов тестирования (ISTQB):</span>
+                        <ol>
+                            <li><span class="highlight">Тестирование демонстрирует наличие дефектов</span>, а не их отсутствие.</li>
+                            <li><span class="highlight">Исчерпывающее тестирование невозможно</span> (нельзя проверить все комбинации).</li>
+                            <li><span class="highlight">Раннее тестирование</span> (чем раньше начнешь, тем дешевле исправить).</li>
+                            <li><span class="highlight">Скопление дефектов</span> (дефекты часто группируются в определенных модулях).</li>
+                            <li><span class="highlight">Парадокс пестицида</span> (тест-кейсы нужно обновлять, иначе они перестают находить баги).</li>
+                            <li><span class="highlight">Тестирование зависит от контекста</span> (тестировать сайт и софт для кардиостимулятора нужно по-разному).</li>
+                            <li><span class="highlight">Заблуждение об отсутствии ошибок</span> (программа без багов, которая не нужна пользователю — бесполезна).</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q5" class="accordion-checkbox">
+                <label for="q5" class="accordion-header">
+                    <div class="q-num">5</div>
+                    <div class="q-text">Место тестирования в ЖЦПП. Связь тестирования с разработкой</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>Тестирование — это <span class="highlight">неотъемлемая часть ЖЦПП</span>. Современные модели разработки (особенно Agile и V-модель) предполагают, что тестирование начинается параллельно с анализом требований.</p>
+                        <ul>
+                            <li><span class="highlight">Связь:</span> Разработка создает продукт, тестирование проверяет его. Тестировщики дают разработчикам обратную связь (баг-репорты). Тестирование требований *до* кодинга предотвращает множество багов.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q6" class="accordion-checkbox">
+                <label for="q6" class="accordion-header">
+                    <div class="q-num">6</div>
+                    <div class="q-text">Модель тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>Это концептуальная схема, описывающая этапы, виды и последовательность действий в процессе тестирования конкретного проекта.</p>
+                        <p>Она тесно связана с выбранной моделью разработки. Например, в <span class="highlight">V-модели тестирования</span> каждому этапу разработки соответствует свой уровень тестирования (модульное, интеграционное, системное, приемочное).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q7" class="accordion-checkbox">
+                <label for="q7" class="accordion-header">
+                    <div class="q-num">7</div>
+                    <div class="q-text">Статическое тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Статическое тестирование</span>
+                        <p>Это тестирование <span class="highlight">без запуска программного кода</span>. Оно направлено на поиск багов в документации или в самом коде до его компиляции.</p>
+                        <ul>
+                            <li><span class="highlight">Виды:</span> Рецензирование документации (требований, тест-планов), Инспекция кода, Сквозной просмотр (Walkthrough), Статический анализ кода (автоматический).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q8" class="accordion-checkbox">
+                <label for="q8" class="accordion-header">
+                    <div class="q-num">8</div>
+                    <div class="q-text">Динамическое тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Динамическое тестирование</span>
+                        <p>Это тестирование, предполагающее <span class="highlight">запуск программного кода</span>. Проверяется поведение программы в процессе ее выполнения.</p>
+                        <ul>
+                            <li>Позволяет проверить реальный функционал, производительность и взаимодействие компонентов.</li>
+                            <li>Примеры: все виды ручного тестирования интерфейса, нагрузочное тестирование, модульные тесты.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q9" class="accordion-checkbox">
+                <label for="q9" class="accordion-header">
+                    <div class="q-num">9</div>
+                    <div class="q-text">Верификация и валидация</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ul>
+                            <li><span class="def-title">Верификация (Verification)</span>: "Делаем ли мы продукт правильно?" (Compliance to specs). Проверка соответствия этапа разработки требованиям к этому этапу. <span class="highlight">(Статические методы, модульные тесты).</span></li>
+                            <li><span class="def-title">Валидация (Validation)</span>: "Делаем ли мы правильный продукт?" (Fitness for purpose). Проверка того, что созданный продукт соответствует нуждам пользователя. <span class="highlight">(Динамические методы, приемочное тестирование).</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q10" class="accordion-checkbox">
+                <label for="q10" class="accordion-header">
+                    <div class="q-num">10</div>
+                    <div class="q-text">Тестовый план (Test Plan)</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Тест-план</span>
+                        <p>Это документ, описывающий весь объем работ по тестированию. Это "генеральная стратегия" для тестировщиков.</p>
+                        <ul>
+                            <li>Что тестируем? (Объект).</li>
+                            <li>Как тестируем? (Стратегия, методы).</li>
+                            <li>Кто тестирует? (Ресурсы).</li>
+                            <li>Где тестируем? (Окружение).</li>
+                            <li>Критерии начала и окончания тестирования.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q11" class="accordion-checkbox">
+                <label for="q11" class="accordion-header">
+                    <div class="q-num">11</div>
+                    <div class="q-text">Тестовый сценарий (Test Case)</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Тест-кейс</span>
+                        <p>Это минимальный набор действий и условий, необходимых для проверки конкретной функции ПО.</p>
+                        <ul>
+                            <li><span class="highlight">Структура:</span> Айдишник, Заголовок, Предусловия, Шаги воспроизведения, Тестовые данные, Ожидаемый результат.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q12" class="accordion-checkbox">
+                <label for="q12" class="accordion-header">
+                    <div class="q-num">12</div>
+                    <div class="q-text">Уровни тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ol>
+                            <li><span class="highlight">Модульное (Unit)</span>: Проверка отдельных минимальных компонентов кода (функций, классов).</li>
+                            <li><span class="highlight">Интеграционное (Integration)</span>: Проверка взаимодействия между объединенными модулями.</li>
+                            <li><span class="highlight">Системное (System)</span>: Проверка всей системы целиком на соответствие исходным требованиям.</li>
+                            <li><span class="highlight">Приемочное (Acceptance)</span>: Финальное тестирование, проводимое заказчиком или конечными пользователями.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q13" class="accordion-checkbox">
+                <label for="q13" class="accordion-header">
+                    <div class="q-num">13</div>
+                    <div class="q-text">Классификация тестирования. Типы тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Основное деление (по цели):</span>
+                        <ul>
+                            <li><span class="highlight">Функциональное</span>: "Что делает программа?" (функциональность, совместимость).</li>
+                            <li><span class="highlight">Нефункциональное</span>: "Как хорошо она это делает?" (производительность, удобство использования, безопасность, надежность).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q14" class="accordion-checkbox">
+                <label for="q14" class="accordion-header">
+                    <div class="q-num">14</div>
+                    <div class="q-text">Классификация тестирования. Виды тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>Это деление на более узкие задачи тестирования.</p>
+                        <ul>
+                            <li><span class="highlight">Дымовое тестирование (Smoke)</span>: Поверхностная проверка ключевых функций после сборки.</li>
+                            <li><span class="highlight">Регрессионное тестирование</span>: Повторное тестирование после изменений, чтобы убедиться, что старый функционал не сломался.</li>
+                            <li><span class="highlight">Санити тестирование (Sanity)</span>: Глубокая проверка конкретного исправленного баг-репорта.</li>
+                            <li><span class="highlight">UI Тестирование</span>: Тестирование пользовательского интерфейса.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q15" class="accordion-checkbox">
+                <label for="q15" class="accordion-header">
+                    <div class="q-num">15</div>
+                    <div class="q-text">Методы (подходы) тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ul>
+                            <li><span class="highlight">Белый ящик (White Box)</span>: Тестировщик знает внутреннее устройство кода. Тесты пишутся на основе структуры кода. <span class="highlight">(Пример: Unit-тесты).</span></li>
+                            <li><span class="highlight">Черный ящик (Black Box)</span>: Тестировщик не знает код, видит систему только "снаружи". Тесты пишутся на основе требований. <span class="highlight">(Пример: Тестирование интерфейса).</span></li>
+                            <li><span class="highlight">Серый ящик (Grey Box)</span>: Комбинация методов. Тестировщик имеет частичный доступ к коду или БД.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q16" class="accordion-checkbox">
+                <label for="q16" class="accordion-header">
+                    <div class="q-num">16</div>
+                    <div class="q-text">Техники тест-дизайна</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Тест-дизайн</span>
+                        <p>Это процесс проектирования тест-кейсов. Техники помогают создать эффективные тесты с минимальным покрытием.</p>
+                        <ol>
+                            <li><span class="highlight">Эквивалентное разделение</span>: Разбиение данных на классы, где один представитель заменяет весь класс.</li>
+                            <li><span class="highlight">Анализ граничных значений</span>: Тестирование на границах и рядом с границами диапазонов данных.</li>
+                            <li><span class="highlight">Таблицы принятия решений</span>: Удобно для тестирования сложной логики.</li>
+                            <li><span class="highlight">Диаграмма переходов и состояний</span>: Для систем, где поведение зависит от состояния.</li>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q17" class="accordion-checkbox">
+                <label for="q17" class="accordion-header">
+                    <div class="q-num">17</div>
+                    <div class="q-text">Понятие дефекта. Атрибуты дефекта</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Дефект (Bug, Error)</span>
+                        <p>Это несоответствие фактического результата Ожидаемому результату, описанному в требованиях.</p>
+                        <span class="def-title">Ключевые атрибуты баг-репорта:</span>
+                        <ul>
+                            <li><span class="highlight">ID</span>: Уникальный номер.</li>
+                            <li><span class="highlight">Заголовок (Summary)</span>: Краткое описание (Что, Где, При каких условиях).</li>
+                            <li><span class="highlight">Шаги воспроизведения</span>: Пошаговая инструкция, как получить баг.</li>
+                            <li><span class="highlight">Серьезность (Severity)</span>: Влияние бага на бизнес-логику системы.</li>
+                            <li><span class="highlight">Приоритет (Priority)</span>: Срочность исправления.</li>
+                            <li><span class="highlight">Фактический и Ожидаемый результаты.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q18" class="accordion-checkbox">
+                <label for="q18" class="accordion-header">
+                    <div class="q-num">18</div>
+                    <div class="q-text">Жизненный цикл дефекта</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Жизненный цикл дефекта:</span>
+                        <p>Это путь дефекта от момента обнаружения до закрытия.</p>
+                        <ul>
+                            <li><span class="highlight">New (Новый)</span>: Только что создан тестировщиком.</li>
+                            <li><span class="highlight">Assigned (Назначен)</span>: Менеджер передал баг разработчику.</li>
+                            <li><span class="highlight">Fixed (Исправлен)</span>: Разработчик исправил код.</li>
+                            <li><span class="highlight">Verified (Проверен)</span>: Тестировщик подтвердил исправление.</li>
+                            <li><span class="highlight">Closed (Закрыт)</span>: Финальный статус.</li>
+                            <li><span class="highlight">Rejected (Отклонен)</span>: Если это не баг.</li>
+                            <li><span class="highlight">Deferred (Отложен)</span>: Будет исправлен позже.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q19" class="accordion-checkbox">
+                <label for="q19" class="accordion-header">
+                    <div class="q-num">19</div>
+                    <div class="q-text">Документирование дефектов</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>Это процесс создания баг-репорта в специальных системах (Баг-трекерах, например, Jira, YouTrack). Качественно задокументированный дефект экономит время разработчика и ускоряет релиз.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q20" class="accordion-checkbox">
+                <label for="q20" class="accordion-header">
+                    <div class="q-num">20</div>
+                    <div class="q-text">Автоматизация тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Автоматизированное тестирование</span>
+                        <p>Это использование программного обеспечения для выполнения тестов и сравнения фактического результата с ожидаемым. Пишутся скрипты (код).</p>
+                        <ul>
+                            <li><span class="highlight">Зачем:</span> Ускорение тестирования, избавление от рутины, возможность частых прогонов (например, при CI/CD).</li>
+                            <li><span class="highlight">Инструменты:</span> Selenium, Cypress, Playwright (для веба), Postman (для API).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q21" class="accordion-checkbox">
+                <label for="q21" class="accordion-header">
+                    <div class="q-num">21</div>
+                    <div class="q-text">Нефункциональное тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>Проверка характеристик, <span class="highlight">не связанных с бизнес-логикой</span>. Описывает качество работы системы.</p>
+                        <ul>
+                            <li>Тестирование <span class="highlight">производительности</span> (Скорость ответа, устойчивость).</li>
+                            <li>Тестирование <span class="highlight">безопасности</span> (Защита от взломов, утечек данных).</li>
+                            <li>Тестирование <span class="highlight">удобства использования (Usability)</span>: Насколько интерфейс понятен пользователю.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q22" class="accordion-checkbox">
+                <label for="q22" class="accordion-header">
+                    <div class="q-num">22</div>
+                    <div class="q-text">Виды функционального тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ul>
+                            <li><span class="highlight">Смоук-тестирование</span>: Базовая проверка работоспособности.</li>
+                            <li><span class="highlight">Тестирование критического пути</span>: Проверка самых частых сценариев пользователя.</li>
+                            <li><span class="highlight">Расширенное тестирование</span>: Покрытие всех функций системы.</li>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q23" class="accordion-checkbox">
+                <label for="q23" class="accordion-header">
+                    <div class="q-num">23</div>
+                    <div class="q-text">Виды нефункционального тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ul>
+                            <li><span class="highlight">Нагрузочное</span>: Проверка работы под нормальной нагрузкой.</li>
+                            <li><span class="highlight">Стресс-тестирование</span>: Проверка работы под критической нагрузкой.</li>
+                            <li><span class="highlight">Объемное</span>: Проверка работы с большими объемами данных.</li>
+                            <li>Тестирование совместимости (кроссбраузерность).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q24" class="accordion-checkbox">
+                <label for="q24" class="accordion-header">
+                    <div class="q-num">24</div>
+                    <div class="q-text">Дымовое и регрессионное тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ul>
+                            <li><span class="def-title">Дымовое (Smoke)</span>: Проверка самого критического функционала (например, можно ли залогиниться на сайт). <span class="highlight">Цель: Быстро понять, жива ли сборка.</span></li>
+                            <li><span class="def-title">Регрессионное (Regression)</span>: Глубокая проверка всей системы после любого изменения кода. <span class="highlight">Цель: Убедиться, что изменения не сломали старое.</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q25" class="accordion-checkbox">
+                <label for="q25" class="accordion-header">
+                    <div class="q-num">25</div>
+                    <div class="q-text">Альфа- и бета-тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <ul>
+                            <li><span class="def-title">Альфа-тестирование</span>: Проводится <span class="highlight">внутри компании</span> разработчиков. Обычно это приемочное тестирование для внутреннего релиза.</li>
+                            <li><span class="def-title">Бета-тестирование</span>: Проводится <span class="highlight">конечными пользователями</span> (бета-тестерами) за пределами компании. Помогает получить реальную обратную связь.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q26" class="accordion-checkbox">
+                <label for="q26" class="accordion-header">
+                    <div class="q-num">26</div>
+                    <div class="q-text">Нагрузочное тестирование. Методы, инструменты</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Нагрузочное тестирование (Performance Testing)</span>
+                        <p>Определение времени отклика, пропускной способности и устойчивости ПО под ожидаемой нагрузкой.</p>
+                        <ul>
+                            <li><span class="highlight">Методы:</span> Эмуляция пользователей, генерация трафика.</li>
+                            <li><span class="highlight">Инструменты:</span> Apache JMeter, Gatling, K6.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q27" class="accordion-checkbox">
+                <label for="q27" class="accordion-header">
+                    <div class="q-num">27</div>
+                    <div class="q-text">Интеграционное тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon">
+                </i></label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Интеграционное тестирование (Integration Testing)</span>
+                        <p>Проверка <span class="highlight">взаимодействия</span> между отдельными программными модулями, которые уже прошли модульное тестирование.</p>
+                        <ul>
+                            <li>Ищет баги в интерфейсах обмена данными.</li>
+                            <li>Примеры: тестирование API, тестирование связок БД + Код.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q28" class="accordion-checkbox">
+                <label for="q28" class="accordion-header">
+                    <div class="q-num">28</div>
+                    <div class="q-text">Модульное тестирование</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Модульное тестирование (Unit Testing)</span>
+                        <p>Тестирование <span class="highlight">наименьших компонентов</span> программы (отдельных функций, методов, классов).</p>
+                        <ul>
+                            <li>Это метод "Белого ящика". Пишется разработчиками.</li>
+                            <li>Цель: Быстро найти ошибки в логике функции.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q29" class="accordion-checkbox">
+                <label for="q29" class="accordion-header">
+                    <div class="q-num">29</div>
+                    <div class="q-text">Связь уровней тестирования и ЖЦПП (V-модель)</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p><span class="highlight">V-модель</span> наглядно показывает, что каждому этапу разработки соответствует уровень тестирования.</p>
+                        <ul>
+                            <li>Анализ требований -> Приемочное тестирование.</li>
+                            <li>Проектирование системы -> Системное тестирование.</li>
+                            <li>Детальное проектирование -> Интеграционное тестирование.</li>
+                            <li>Кодирование -> Модульное тестирование.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q30" class="accordion-checkbox">
+                <label for="q30" class="accordion-header">
+                    <div class="q-num">30</div>
+                    <div class="q-text">Тестовое окружение. Процесс тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Тестовое окружение (Test Environment)</span>
+                        <p>Совокупность аппаратного, программного обеспечения и сетевых настроек, необходимых для выполнения тестов. <span class="highlight">(Пример: "Стенд тестирования").</span></p>
+                        <span class="def-title">Процесс тестирования (кратко):</span>
+                        <ol>
+                            <li>Планирование (Test Plan).</li>
+                            <li>Тест-дизайн (Test Cases).</li>
+                            <li>Подготовка окружения.</li>
+                            <li>Выполнение тестов.</li>
+                            <li>Анализ результатов и заведение баг-репортов.</li>
+                            <li>Отчет о результатах.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q31" class="accordion-checkbox">
+                <label for="q31" class="accordion-header">
+                    <div class="q-num">31</div>
+                    <div class="q-text">Тестирование в Agile-моделях</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>В <span class="highlight">Agile (Scrum)</span> тестирование начинается с первого дня спринта. Нет жесткого отделения тестировщиков от разработчиков — это единая команда.</p>
+                        <ul>
+                            <li>Тестировщики активно участвуют в грумингах требований.</li>
+                            <li>Автоматизация тестирования критически важна для частых релизов.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q32" class="accordion-checkbox">
+                <label for="q32" class="accordion-header">
+                    <div class="q-num">32</div>
+                    <div class="q-text">Менеджмент тестирования. Инструменты</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <p>Процесс управления командой, ресурсами и документацией тестирования.</p>
+                        <ul>
+                            <li><span class="highlight">Инструменты для баг-трекинга</span>: Jira, Mantis.</li>
+                            <li><span class="highlight">Инструменты для хранения тест-кейсов (TMS)</span>: TestRail, Zephyr (плагин для Jira), Allure TestOps.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q33" class="accordion-checkbox">
+                <label for="q33" class="accordion-header">
+                    <div class="q-num">33</div>
+                    <div class="q-text">Тестирование веб-приложений</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Ключевые аспекты:</span>
+                        <ul>
+                            <li>Кроссбраузерность.</li>
+                            <li>Адаптивность (мобильные устройства).</li>
+                            <li>Тестирование веб-служб (API, JSON/XML).</li>
+                            <li>Производительность (время загрузки страниц).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q34" class="accordion-checkbox">
+                <label for="q34" class="accordion-header">
+                    <div class="q-num">34</div>
+                    <div class="q-text">Тестирование десктоп-приложений</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Ключевые аспекты:</span>
+                        <ul>
+                            <li>Совместимость с ОС (Windows 10/11, macOS, Linux).</li>
+                            <li>Установка/Удаление/Обновление.</li>
+                            <li>Потребление ресурсов системы (ОЗУ, Процессор).</li>
+                            <li>Взаимодействие с периферией.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q35" class="accordion-checkbox">
+                <label for="q35" class="accordion-header">
+                    <div class="q-num">35</div>
+                    <div class="q-text">Тестирование мобильных приложений</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Ключевые аспекты:</span>
+                        <ul>
+                            <li>Проверка прерываний (звонок, СМС, низкий заряд).</li>
+                            <li>Разные ориентации экрана.</li>
+                            <li>Работа с разными типами сетей (2G/3G/4G/WiFi).</li>
+                            <li>Установка из сторов (App Store, Google Play).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q36" class="accordion-checkbox">
+                <label for="q36" class="accordion-header">
+                    <div class="q-num">36</div>
+                    <div class="q-text">Метрики тестирования. Отчётность</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Метрики</span>
+                        <p>Это численные показатели качества. <span class="highlight">(Примеры: % пройденных тестов, плотность багов, время исправления багов).</span></p>
+                        <span class="def-title">Отчётность (Test Report)</span>
+                        <p>Итоговый документ, подытоживающий результаты тестирования сборки. Отвечает на вопрос: "Можно ли выпускать продукт?"</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <input type="checkbox" id="q37" class="accordion-checkbox">
+                <label for="q37" class="accordion-header">
+                    <div class="q-num">37</div>
+                    <div class="q-text">Понятие риск-ориентированного тестирования</div>
+                    <i class="fas fa-chevron-down accordion-icon"></i>
+                </label>
+                <div class="accordion-content">
+                    <div class="inner-padding">
+                        <span class="def-title">Риск-ориентированное тестирование (Risk-based Testing)</span>
+                        <p>Стратегия, при которой тестирование фокусируется на наиболее <span class="highlight">критичных и рискованных зонах приложения</span>.</p>
+                        <ul>
+                            <li>Позволяет эффективно тратить время, если сроки сжаты.</li>
+                            <li>Приоритет тестов определяется формулой: Риск = Вероятность ошибки * Ущерб от ошибки.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer>
+            <p>Учебный материал • Справочник по тестированию ПО</p>
+            <p>&copy; 2026 Студент группы ИСиП-113</p>
+        </footer>
+    </div>
+
+</body>
+</html>

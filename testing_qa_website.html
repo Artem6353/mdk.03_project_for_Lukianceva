@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестирование ПО: Подготовка к экзамену</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #0f3460;
+            --highlight: #e94560;
+            --text: #e8e8e8;
+            --text-muted: #a8a8b3;
+            --border: #2a2a3e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans Pro', sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            border-bottom: 3px solid var(--highlight);
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .accordion-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .accordion-item:hover {
+            border-color: var(--highlight);
+            box-shadow: 0 4px 20px rgba(233, 69, 96, 0.15);
+        }
+
+        .accordion-header {
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .accordion-header:hover {
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .question-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--highlight);
+            min-width: 40px;
+        }
+
+        .question-text {
+            flex: 1;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .accordion-icon {
+            font-size: 1.5rem;
+            color: var(--highlight);
+            transition: transform 0.3s ease;
+            user-select: none;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .accordion-content-inner {
+            padding: 1.5rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .accordion-content-inner h3 {
+            color: var(--highlight);
+            font-size: 1.1rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .accordion-content-inner h3:first-child {
+            margin-top: 0;
+        }
+
+        .accordion-content-inner ul {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .accordion-content-inner li {
+            margin-bottom: 0.5rem;
+        }
+
+        .accordion-content-inner strong {
+            color: var(--text);
+        }
+
+        input[type="checkbox"] {
+            display: none;
+        }
+
+        input[type="checkbox"]:checked ~ .accordion-content {
+            max-height: 5000px;
+            padding: 0;
+        }
+
+        input[type="checkbox"]:checked ~ .accordion-header .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            animation: fadeIn 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .accordion-header {
+                padding: 1rem;
+            }
+
+            .question-text {
+                font-size: 0.95rem;
+            }
+
+            .accordion-content-inner {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Тестирование ПО</h1>
+            <p class="subtitle">Вопросы для подготовки к экзамену • 37 вопросов с подробными ответами</p>
+        </header>
+
+        <div class="accordion">
+            <!-- Question 1 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q1">
+                <label for="q1" class="accordion-header">
+                    <span class="question-number">1.</span>
+                    <span class="question-text">Определите понятие жизненного цикла программного продукта</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Жизненный цикл программного продукта (ЖЦ ПО)</strong> — это период времени, который начинается с момента принятия решения о необходимости создания программного продукта и заканчивается в момент его полного изъятия из эксплуатации.</p>
+                        <p>ЖЦ ПО включает следующие основные этапы:</p>
+                        <ul>
+                            <li><strong>Анализ требований</strong> — определение функциональных и нефункциональных требований к системе</li>
+                            <li><strong>Проектирование</strong> — разработка архитектуры и детального дизайна системы</li>
+                            <li><strong>Реализация (кодирование)</strong> — написание программного кода</li>
+                            <li><strong>Тестирование</strong> — проверка соответствия продукта требованиям</li>
+                            <li><strong>Внедрение</strong> — развертывание системы в производственной среде</li>
+                            <li><strong>Сопровождение</strong> — поддержка, исправление ошибок и внесение изменений</li>
+                            <li><strong>Вывод из эксплуатации</strong> — завершение использования продукта</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q2">
+                <label for="q2" class="accordion-header">
+                    <span class="question-number">2.</span>
+                    <span class="question-text">Опишите модели жизненного цикла разработки программного продукта</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Основные модели ЖЦ ПО:</h3>
+                        
+                        <h3>1. Каскадная (Waterfall) модель</h3>
+                        <p>Последовательная модель, где каждый этап начинается после завершения предыдущего. Этапы: требования → проектирование → реализация → тестирование → внедрение → сопровождение.</p>
+                        
+                        <h3>2. Итеративная модель</h3>
+                        <p>Разработка происходит циклами (итерациями), каждая итерация включает все этапы разработки и добавляет новую функциональность.</p>
+                        
+                        <h3>3. Спиральная модель</h3>
+                        <p>Комбинирует итеративный подход с элементами каскадной модели, добавляя анализ рисков на каждом витке спирали.</p>
+                        
+                        <h3>4. Инкрементная модель</h3>
+                        <p>Система разрабатывается и поставляется частями (инкрементами), каждая часть добавляет новую функциональность.</p>
+                        
+                        <h3>5. V-образная модель</h3>
+                        <p>Расширение каскадной модели, где каждому этапу разработки соответствует этап тестирования.</p>
+                        
+                        <h3>6. Agile (гибкие методологии)</h3>
+                        <p>Семейство методологий, ориентированных на адаптивность, частую поставку рабочего ПО и тесное взаимодействие с заказчиком (Scrum, Kanban, XP).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q3">
+                <label for="q3" class="accordion-header">
+                    <span class="question-number">3.</span>
+                    <span class="question-text">Назовите общие принципы моделирования жизненного цикла. Классическая водопадная модель. Спиральная модель. RAD-модель</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Общие принципы моделирования ЖЦ ПС:</h3>
+                        <ul>
+                            <li><strong>Декомпозиция</strong> — разбиение процесса на отдельные этапы и работы</li>
+                            <li><strong>Последовательность и параллельность</strong> — определение порядка выполнения работ</li>
+                            <li><strong>Итеративность</strong> — возможность повторения этапов</li>
+                            <li><strong>Верифицируемость</strong> — проверка результатов каждого этапа</li>
+                            <li><strong>Управляемость</strong> — контроль и мониторинг процесса</li>
+                        </ul>
+
+                        <h3>Классическая водопадная модель (Waterfall):</h3>
+                        <ul>
+                            <li><strong>Особенности:</strong> строгая последовательность этапов, возврат к предыдущим этапам затруднен</li>
+                            <li><strong>Преимущества:</strong> простота планирования, четкая документация</li>
+                            <li><strong>Недостатки:</strong> негибкость, поздняя проверка работоспособности</li>
+                        </ul>
+
+                        <h3>Спиральная модель ЖЦ ПС:</h3>
+                        <ul>
+                            <li><strong>Особенности:</strong> четыре квадранта - планирование, анализ рисков, разработка, оценка</li>
+                            <li><strong>Преимущества:</strong> ранний анализ рисков, гибкость, прототипирование</li>
+                            <li><strong>Недостатки:</strong> сложность управления, требует экспертизы в анализе рисков</li>
+                        </ul>
+
+                        <h3>Модель быстрой разработки приложений (RAD):</h3>
+                        <ul>
+                            <li><strong>Особенности:</strong> короткий цикл разработки (60-90 дней), активное использование CASE-средств</li>
+                            <li><strong>Фазы:</strong> бизнес-моделирование, моделирование данных, моделирование процессов, генерация приложения, тестирование</li>
+                            <li><strong>Преимущества:</strong> быстрая поставка, активное участие пользователей</li>
+                            <li><strong>Недостатки:</strong> подходит не для всех проектов, требует высококвалифицированной команды</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 4 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q4">
+                <label for="q4" class="accordion-header">
+                    <span class="question-number">4.</span>
+                    <span class="question-text">Укажите основные принципы тестирования и отладки ПО</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Основные принципы тестирования:</h3>
+                        <ul>
+                            <li><strong>Тестирование демонстрирует наличие дефектов</strong> — невозможно доказать отсутствие ошибок</li>
+                            <li><strong>Исчерпывающее тестирование невозможно</strong> — проверка всех комбинаций непрактична</li>
+                            <li><strong>Раннее тестирование</strong> — чем раньше найдена ошибка, тем дешевле её исправить</li>
+                            <li><strong>Скопление дефектов</strong> — большинство ошибок концентрируется в ограниченном числе модулей</li>
+                            <li><strong>Парадокс пестицида</strong> — повторяющиеся тесты теряют эффективность</li>
+                            <li><strong>Тестирование зависит от контекста</strong> — подход зависит от типа приложения</li>
+                            <li><strong>Заблуждение об отсутствии ошибок</strong> — даже работающее ПО может не соответствовать требованиям</li>
+                        </ul>
+
+                        <h3>Основные принципы отладки:</h3>
+                        <ul>
+                            <li><strong>Воспроизводимость</strong> — способность повторить ошибку</li>
+                            <li><strong>Изоляция</strong> — локализация участка кода с ошибкой</li>
+                            <li><strong>Упрощение</strong> — минимизация условий воспроизведения</li>
+                            <li><strong>Систематический подход</strong> — использование методов поиска (бинарный поиск, обратное прослеживание)</li>
+                            <li><strong>Документирование</strong> — фиксация найденных проблем и решений</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 5 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q5">
+                <label for="q5" class="accordion-header">
+                    <span class="question-number">5.</span>
+                    <span class="question-text">Назовите цели и задачи тестирования, основные этапы. Тестовый цикл</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Цели тестирования:</h3>
+                        <ul>
+                            <li>Обнаружение дефектов в программном обеспечении</li>
+                            <li>Проверка соответствия требованиям</li>
+                            <li>Повышение качества и надежности ПО</li>
+                            <li>Предоставление информации о состоянии продукта</li>
+                            <li>Снижение рисков при эксплуатации</li>
+                        </ul>
+
+                        <h3>Задачи тестирования:</h3>
+                        <ul>
+                            <li>Проверка функциональности согласно спецификации</li>
+                            <li>Выявление отклонений от ожидаемого поведения</li>
+                            <li>Проверка производительности и стабильности</li>
+                            <li>Оценка удобства использования</li>
+                            <li>Проверка совместимости с различными платформами</li>
+                        </ul>
+
+                        <h3>Основные этапы тестирования:</h3>
+                        <ul>
+                            <li><strong>1. Планирование</strong> — определение стратегии, ресурсов, сроков</li>
+                            <li><strong>2. Проектирование тестов</strong> — создание тест-кейсов и тестовых данных</li>
+                            <li><strong>3. Подготовка тестовой среды</strong> — настройка окружения</li>
+                            <li><strong>4. Выполнение тестов</strong> — запуск тестов и фиксация результатов</li>
+                            <li><strong>5. Анализ результатов</strong> — оценка найденных дефектов</li>
+                            <li><strong>6. Отчетность</strong> — документирование и представление результатов</li>
+                        </ul>
+
+                        <h3>Тестовый цикл (Test Life Cycle):</h3>
+                        <ul>
+                            <li>Анализ требований</li>
+                            <li>Планирование тестирования</li>
+                            <li>Разработка тестовых сценариев</li>
+                            <li>Настройка тестового окружения</li>
+                            <li>Выполнение тестов</li>
+                            <li>Завершение тестирования (closure)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 6 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q6">
+                <label for="q6" class="accordion-header">
+                    <span class="question-number">6.</span>
+                    <span class="question-text">Определите критерии тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Критерии тестирования</strong> — это количественные и качественные показатели, которые определяют достаточность тестирования и момент его завершения.</p>
+
+                        <h3>Критерии входа (Entry Criteria):</h3>
+                        <ul>
+                            <li>Доступность тестовой среды</li>
+                            <li>Готовность требований и спецификаций</li>
+                            <li>Наличие тестовых данных</li>
+                            <li>Готовность сборки для тестирования</li>
+                            <li>Доступность необходимых ресурсов</li>
+                        </ul>
+
+                        <h3>Критерии выхода (Exit Criteria):</h3>
+                        <ul>
+                            <li>Выполнение всех запланированных тестов</li>
+                            <li>Достижение требуемого покрытия кода/требований</li>
+                            <li>Отсутствие критических дефектов</li>
+                            <li>Процент пройденных тестов соответствует целевому значению</li>
+                            <li>Соответствие показателей качества установленным нормам</li>
+                        </ul>
+
+                        <h3>Количественные критерии:</h3>
+                        <ul>
+                            <li>Процент покрытия кода (code coverage)</li>
+                            <li>Процент покрытия требований</li>
+                            <li>Плотность дефектов (дефекты на 1000 строк кода)</li>
+                            <li>Процент успешно выполненных тест-кейсов</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 7 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q7">
+                <label for="q7" class="accordion-header">
+                    <span class="question-number">7.</span>
+                    <span class="question-text">Укажите параметры тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>1. Покрытие (Coverage):</h3>
+                        <ul>
+                            <li>Покрытие кода (строк, ветвей, условий)</li>
+                            <li>Покрытие требований</li>
+                            <li>Покрытие функциональности</li>
+                        </ul>
+
+                        <h3>2. Метрики дефектов:</h3>
+                        <ul>
+                            <li>Количество обнаруженных дефектов</li>
+                            <li>Плотность дефектов</li>
+                            <li>Распределение дефектов по приоритету/серьезности</li>
+                            <li>Скорость обнаружения и исправления дефектов</li>
+                        </ul>
+
+                        <h3>3. Эффективность тестирования:</h3>
+                        <ul>
+                            <li>Процент пройденных/провалившихся тестов</li>
+                            <li>Время выполнения тестов</li>
+                            <li>Коэффициент повторного открытия дефектов</li>
+                            <li>Процент автоматизированных тестов</li>
+                        </ul>
+
+                        <h3>4. Качественные параметры:</h3>
+                        <ul>
+                            <li>Надежность (MTBF - среднее время между отказами)</li>
+                            <li>Производительность (время отклика, пропускная способность)</li>
+                            <li>Удобство использования, совместимость, безопасность</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 8 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q8">
+                <label for="q8" class="accordion-header">
+                    <span class="question-number">8.</span>
+                    <span class="question-text">Опишите виды тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>По уровню тестирования:</h3>
+                        <ul>
+                            <li><strong>Модульное (Unit)</strong> — тестирование отдельных компонентов</li>
+                            <li><strong>Интеграционное</strong> — проверка взаимодействия компонентов</li>
+                            <li><strong>Системное</strong> — тестирование системы в целом</li>
+                            <li><strong>Приемочное</strong> — проверка готовности к передаче заказчику</li>
+                        </ul>
+
+                        <h3>По объекту тестирования:</h3>
+                        <ul>
+                            <li><strong>Функциональное</strong> — проверка функций согласно требованиям</li>
+                            <li><strong>Нефункциональное</strong> — производительность, безопасность, удобство</li>
+                            <li><strong>Структурное</strong> — проверка внутренней структуры</li>
+                        </ul>
+
+                        <h3>Специализированные виды:</h3>
+                        <ul>
+                            <li><strong>Регрессионное</strong> — проверка после изменений</li>
+                            <li><strong>Дымовое (Smoke)</strong> — базовая проверка основной функциональности</li>
+                            <li><strong>Санитарное (Sanity)</strong> — быстрая проверка конкретной функциональности</li>
+                            <li><strong>Исследовательское</strong> — творческий подход без формальных тест-кейсов</li>
+                            <li><strong>Нагрузочное</strong> — проверка поведения под нагрузкой</li>
+                            <li><strong>Стресс-тестирование</strong> — проверка на пределе возможностей</li>
+                            <li><strong>Безопасности</strong> — поиск уязвимостей</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 9 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q9">
+                <label for="q9" class="accordion-header">
+                    <span class="question-number">9.</span>
+                    <span class="question-text">Определите основные стратегии восходящего и нисходящего тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Нисходящее тестирование (Top-Down):</h3>
+                        <ul>
+                            <li><strong>Суть:</strong> Тестирование начинается с модулей верхнего уровня и постепенно спускается к модулям нижнего уровня</li>
+                            <li><strong>Подход:</strong> Используются заглушки (stubs) для имитации еще не разработанных модулей нижнего уровня</li>
+                            <li><strong>Преимущества:</strong> Раннее тестирование основной логики, раннее обнаружение архитектурных проблем</li>
+                            <li><strong>Недостатки:</strong> Необходимость создания большого количества заглушек, позднее обнаружение проблем на нижних уровнях</li>
+                        </ul>
+
+                        <h3>Восходящее тестирование (Bottom-Up):</h3>
+                        <ul>
+                            <li><strong>Суть:</strong> Тестирование начинается с модулей нижнего уровня и постепенно поднимается к модулям верхнего уровня</li>
+                            <li><strong>Подход:</strong> Используются драйверы (drivers) для вызова тестируемых модулей нижнего уровня</li>
+                            <li><strong>Преимущества:</strong> Раннее тестирование критичных низкоуровневых модулей, не требуется создание заглушек</li>
+                            <li><strong>Недостатки:</strong> Необходимость создания драйверов, позднее тестирование верхнеуровневой логики</li>
+                        </ul>
+
+                        <h3>Сэндвич-стратегия:</h3>
+                        <p>Комбинирует оба подхода: тестируются одновременно модули верхнего и нижнего уровней, встречаясь в середине.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 10 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q10">
+                <label for="q10" class="accordion-header">
+                    <span class="question-number">10.</span>
+                    <span class="question-text">Определите задачи тестирования методом «Черного ящика»</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Тестирование методом «Черного ящика»</strong> — метод функционального тестирования, при котором тестировщик не имеет доступа к внутренней структуре и коду программы.</p>
+
+                        <h3>Основные задачи:</h3>
+                        <ul>
+                            <li>Проверка функциональности — соответствие спецификации и требованиям</li>
+                            <li>Валидация входных данных — корректная обработка допустимых и недопустимых значений</li>
+                            <li>Проверка граничных значений — поведение на границах диапазонов</li>
+                            <li>Тестирование интерфейса — взаимодействие между компонентами</li>
+                            <li>Верификация выходных данных — правильность результатов</li>
+                        </ul>
+
+                        <h3>Техники «Черного ящика»:</h3>
+                        <ul>
+                            <li><strong>Эквивалентное разбиение</strong> — группировка данных в классы эквивалентности</li>
+                            <li><strong>Анализ граничных значений</strong> — тестирование на границах диапазонов</li>
+                            <li><strong>Таблицы решений</strong> — проверка комбинаций условий</li>
+                            <li><strong>Диаграммы переходов состояний</strong> — тестирование переходов между состояниями</li>
+                            <li><strong>Попарное тестирование</strong> — проверка комбинаций параметров</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 11 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q11">
+                <label for="q11" class="accordion-header">
+                    <span class="question-number">11.</span>
+                    <span class="question-text">Опишите стратегию тестирования методом «Белого ящика»</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Тестирование методом «Белого ящика»</strong> — метод структурного тестирования, при котором тестировщик имеет полный доступ к исходному коду.</p>
+
+                        <h3>Критерии покрытия:</h3>
+                        <ul>
+                            <li><strong>Покрытие операторов (Statement Coverage)</strong> — выполнить каждую инструкцию кода хотя бы один раз</li>
+                            <li><strong>Покрытие решений/ветвей (Branch Coverage)</strong> — протестировать все возможные ветви выполнения</li>
+                            <li><strong>Покрытие условий (Condition Coverage)</strong> — протестировать все возможные значения каждого условия</li>
+                            <li><strong>Покрытие путей (Path Coverage)</strong> — выполнить все возможные пути от входа до выхода</li>
+                        </ul>
+
+                        <h3>Этапы применения:</h3>
+                        <ul>
+                            <li>Анализ кода — изучение структуры, построение графа потока управления</li>
+                            <li>Определение критериев покрытия — выбор необходимого уровня покрытия</li>
+                            <li>Проектирование тестов — создание тест-кейсов для достижения покрытия</li>
+                            <li>Выполнение тестов — запуск с инструментами измерения покрытия</li>
+                            <li>Анализ результатов — оценка достигнутого покрытия и дефектов</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 12 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q12">
+                <label for="q12" class="accordion-header">
+                    <span class="question-number">12.</span>
+                    <span class="question-text">Укажите способы тестирования модуля</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Основные способы:</h3>
+                        <ul>
+                            <li><strong>Изолированное тестирование</strong> — модуль тестируется отдельно с использованием заглушек (stubs) и драйверов (drivers)</li>
+                            <li><strong>Функциональное тестирование модуля</strong> — проверка выполнения заявленных функций, входов и выходов</li>
+                            <li><strong>Структурное тестирование модуля</strong> — покрытие операторов, ветвей, путей, анализ потока данных</li>
+                            <li><strong>Тестирование интерфейсов</strong> — проверка корректности передачи параметров и возвращаемых значений</li>
+                        </ul>
+
+                        <h3>Методы:</h3>
+                        <ul>
+                            <li><strong>Статический анализ</strong> — проверка кода без выполнения (code review, статические анализаторы)</li>
+                            <li><strong>Динамическое тестирование</strong> — выполнение модуля с тестовыми данными</li>
+                            <li><strong>Модульное регрессионное тестирование</strong> — повторное тестирование после изменений</li>
+                        </ul>
+
+                        <h3>Инструменты:</h3>
+                        <ul>
+                            <li>Фреймворки модульного тестирования (JUnit, NUnit, pytest, Jest)</li>
+                            <li>Инструменты измерения покрытия кода</li>
+                            <li>Mock-библиотеки для создания заглушек</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 13 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q13">
+                <label for="q13" class="accordion-header">
+                    <span class="question-number">13.</span>
+                    <span class="question-text">Определите классификацию ошибочных ситуаций при функциональном тестировании</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>По типу:</h3>
+                        <ul>
+                            <li><strong>Функциональные ошибки:</strong> некорректная реализация, отсутствующая или лишняя функциональность</li>
+                            <li><strong>Ошибки обработки данных:</strong> некорректная обработка входных данных, неправильная валидация, ошибки в вычислениях</li>
+                            <li><strong>Ошибки интерфейса:</strong> проблемы UI, взаимодействия между компонентами, API</li>
+                        </ul>
+
+                        <h3>По серьезности (Severity):</h3>
+                        <ul>
+                            <li><strong>Blocker</strong> — блокирует работу приложения</li>
+                            <li><strong>Critical</strong> — критический дефект основной функциональности</li>
+                            <li><strong>Major</strong> — значительный дефект</li>
+                            <li><strong>Minor</strong> — незначительный дефект</li>
+                            <li><strong>Trivial</strong> — тривиальный, косметический дефект</li>
+                        </ul>
+
+                        <h3>По приоритету (Priority):</h3>
+                        <ul>
+                            <li><strong>Immediate</strong> — требует срочного исправления</li>
+                            <li><strong>High</strong> — должен быть исправлен в ближайшем релизе</li>
+                            <li><strong>Medium</strong> — может быть исправлен позже</li>
+                            <li><strong>Low</strong> — исправление по возможности</li>
+                        </ul>
+
+                        <h3>По источнику:</h3>
+                        <ul>
+                            <li>Ошибки требований, проектирования, кодирования, тестирования, конфигурации</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 14 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q14">
+                <label for="q14" class="accordion-header">
+                    <span class="question-number">14.</span>
+                    <span class="question-text">Опишите план модульного тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Структура плана модульного тестирования:</h3>
+                        <ul>
+                            <li><strong>Введение:</strong> цель, область применения, ссылки на документы, термины</li>
+                            <li><strong>Объект тестирования:</strong> идентификация модулей, описание функциональности, зависимости</li>
+                            <li><strong>Особенности тестирования:</strong> перечень тестируемых и нетестируемых функций, подход</li>
+                            <li><strong>Критерии прохождения/провала:</strong> критерии успешного завершения, приостановки, возобновления</li>
+                            <li><strong>Стратегия:</strong> выбор метода (белый/черный ящик), критерии покрытия, инструменты</li>
+                            <li><strong>Тестовые данные:</strong> входные данные, ожидаемые результаты, граничные значения</li>
+                            <li><strong>Тестовая среда:</strong> требования к оборудованию и ПО, конфигурация</li>
+                            <li><strong>Ресурсы:</strong> персонал, роли, необходимое обучение</li>
+                            <li><strong>График:</strong> даты начала и окончания, контрольные точки</li>
+                            <li><strong>Риски и меры снижения:</strong> идентификация рисков, вероятность, план действий</li>
+                            <li><strong>Отчетность:</strong> форматы отчетов, частота, получатели</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 15 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q15">
+                <label for="q15" class="accordion-header">
+                    <span class="question-number">15.</span>
+                    <span class="question-text">Укажите способы локализации ошибочной области</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Основные методы локализации:</h3>
+                        <ul>
+                            <li><strong>Метод бинарного поиска:</strong> разделение кода пополам, определение половины с ошибкой, повторение до локализации</li>
+                            <li><strong>Метод обратного прослеживания:</strong> начало от точки проявления ошибки, движение назад по цепочке вызовов</li>
+                            <li><strong>Метод прямого прослеживания:</strong> начало от точки входа, пошаговое выполнение вперед</li>
+                            <li><strong>Метод индукции:</strong> сбор данных о проявлениях, формулирование и проверка гипотез</li>
+                            <li><strong>Метод дедукции:</strong> перечисление возможных причин, анализ и устранение невозможных</li>
+                            <li><strong>Использование отладчика:</strong> точки останова, пошаговое выполнение, просмотр переменных</li>
+                            <li><strong>Логирование:</strong> добавление операторов вывода, трассировка выполнения</li>
+                            <li><strong>Упрощение тестового случая:</strong> минимизация входных данных, упрощение условий</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 16 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q16">
+                <label for="q16" class="accordion-header">
+                    <span class="question-number">16.</span>
+                    <span class="question-text">Опишите метод структурного тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Метод структурного тестирования</strong> — подход, основанный на анализе внутренней структуры программы, её кода и логики.</p>
+
+                        <h3>Этапы:</h3>
+                        <ul>
+                            <li><strong>1. Построение модели:</strong> создание графа потока управления, выделение узлов и ребер</li>
+                            <li><strong>2. Определение критериев покрытия:</strong> C0 (операторы), C1 (ветви), C2 (условия), покрытие путей</li>
+                            <li><strong>3. Генерация тестовых путей:</strong> выбор путей для требуемого покрытия, определение базового набора</li>
+                            <li><strong>4. Подготовка тестовых данных:</strong> входные данные для выбранных путей, расчет ожидаемых результатов</li>
+                            <li><strong>5. Выполнение тестов:</strong> запуск с инструментами покрытия, измерение, выявление непокрытых элементов</li>
+                        </ul>
+
+                        <h3>Метрики:</h3>
+                        <ul>
+                            <li><strong>Цикломатическая сложность:</strong> V(G) = E - N + 2P</li>
+                            <li><strong>Процент покрытия:</strong> (Покрытые элементы / Всего) × 100%</li>
+                            <li><strong>Плотность дефектов:</strong> количество на единицу кода</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 17 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q17">
+                <label for="q17" class="accordion-header">
+                    <span class="question-number">17.</span>
+                    <span class="question-text">Опишите структурное тестирование маршрутов</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Тестирование маршрутов</strong> — метод, фокусирующийся на проверке различных путей выполнения программы.</p>
+
+                        <h3>Основные понятия:</h3>
+                        <ul>
+                            <li><strong>Маршрут</strong> — последовательность операторов от входа до выхода</li>
+                            <li><strong>Базовый маршрут</strong> — независимый путь с новыми ребрами</li>
+                            <li><strong>Полный маршрут</strong> — путь от входа до выхода программы</li>
+                        </ul>
+
+                        <h3>Метод базисного пути (Маккейб):</h3>
+                        <ul>
+                            <li>Шаг 1: Построение графа потока управления</li>
+                            <li>Шаг 2: Вычисление цикломатической сложности V(G)</li>
+                            <li>Шаг 3: Определение базового набора путей (количество = V(G))</li>
+                            <li>Шаг 4: Подготовка тестовых данных для каждого пути</li>
+                            <li>Шаг 5: Выполнение тестов</li>
+                        </ul>
+
+                        <h3>Вычисление V(G):</h3>
+                        <ul>
+                            <li>V(G) = E - N + 2 (ребра - узлы + 2)</li>
+                            <li>V(G) = P + 1 (предикатные узлы + 1)</li>
+                            <li>V(G) = количество областей графа</li>
+                        </ul>
+
+                        <h3>Тестирование циклов:</h3>
+                        <ul>
+                            <li>Простые циклы: 0, 1, 2, типичное число, максимум итераций</li>
+                            <li>Вложенные циклы: от внутренних к внешним</li>
+                            <li>Связанные циклы: независимое тестирование</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 18 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q18">
+                <label for="q18" class="accordion-header">
+                    <span class="question-number">18.</span>
+                    <span class="question-text">Опишите типы и причины ошибок в вершинах ветвей графа при структурном тестировании</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Типы ошибок:</h3>
+                        <ul>
+                            <li><strong>Ошибки условных операторов:</strong> неправильное условие (!= вместо ==), неполные или избыточные условия</li>
+                            <li><strong>Ошибки логических операций:</strong> AND вместо OR, неправильные скобки, недостижимые ветви</li>
+                            <li><strong>Граничные ошибки:</strong> off-by-one (< vs <=), неправильные границы, отсутствие проверки</li>
+                            <li><strong>Ошибки переменных:</strong> неинициализированные переменные, опечатки, изменение в условии</li>
+                        </ul>
+
+                        <h3>Причины:</h3>
+                        <ul>
+                            <li><strong>Недостатки спецификации:</strong> неполное описание, противоречия, неопределенные граничные случаи</li>
+                            <li><strong>Ошибки проектирования:</strong> неправильная декомпозиция, сложные вложенные условия</li>
+                            <li><strong>Ошибки кодирования:</strong> опечатки, неправильный приоритет операций, copy-paste</li>
+                            <li><strong>Ошибки понимания:</strong> неправильная интерпретация требований, незнание особенностей языка</li>
+                        </ul>
+
+                        <h3>Специфические ошибки:</h3>
+                        <ul>
+                            <li><strong>В IF:</strong> отсутствие ELSE, пустые блоки, перепутанные ветви</li>
+                            <li><strong>В SWITCH/CASE:</strong> отсутствие DEFAULT, пропущенные BREAK, перекрывающиеся условия</li>
+                            <li><strong>В циклах:</strong> неправильное условие выхода, бесконечные циклы</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 19 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q19">
+                <label for="q19" class="accordion-header">
+                    <span class="question-number">19.</span>
+                    <span class="question-text">Опишите результаты модульного тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Документируемые результаты:</h3>
+                        <ul>
+                            <li><strong>Отчет о тестировании:</strong> идентификация модулей, дата, версия кода, конфигурация среды, тестировщик</li>
+                            <li><strong>Результаты выполнения:</strong> статус (passed/failed/skipped), количественные показатели, время выполнения</li>
+                            <li><strong>Метрики покрытия:</strong> Statement, Branch, Condition, Function Coverage, список непокрытых участков</li>
+                            <li><strong>Обнаруженные дефекты:</strong> ID, описание, серьезность, приоритет, шаги воспроизведения, статус</li>
+                            <li><strong>Качественная оценка:</strong> готовность модуля, стабильность, соответствие требованиям</li>
+                            <li><strong>Статистический анализ:</strong> плотность дефектов, распределение по типам, тренды</li>
+                            <li><strong>Рекомендации:</strong> модули для рефакторинга, области риска, предложения по улучшению</li>
+                            <li><strong>Артефакты:</strong> тест-кейсы, тестовые данные, скрипты, логи, скриншоты</li>
+                        </ul>
+
+                        <h3>Форматы:</h3>
+                        <ul>
+                            <li>Текстовый отчет, HTML с графиками, XML/JSON, Dashboard в CI/CD, презентация</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 20 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q20">
+                <label for="q20" class="accordion-header">
+                    <span class="question-number">20.</span>
+                    <span class="question-text">Определите нагрузочное тестирование и его назначение. Этапы проведения</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <p><strong>Нагрузочное тестирование</strong> — тип тестирования производительности, проверяющий способность системы обрабатывать ожидаемое количество пользователей и транзакций.</p>
+
+                        <h3>Назначение:</h3>
+                        <ul>
+                            <li>Проверка работоспособности при нормальной и пиковой нагрузке</li>
+                            <li>Определение максимальной пропускной способности</li>
+                            <li>Выявление узких мест производительности</li>
+                            <li>Оценка времени отклика</li>
+                            <li>Проверка стабильности при длительной работе</li>
+                        </ul>
+
+                        <h3>Этапы:</h3>
+                        <ul>
+                            <li><strong>1. Планирование:</strong> определение целей, анализ требований, выбор метрик и инструментов (JMeter, LoadRunner, Gatling)</li>
+                            <li><strong>2. Подготовка среды:</strong> настройка окружения, подготовка данных, настройка мониторинга, baseline тестирование</li>
+                            <li><strong>3. Разработка сценариев:</strong> создание user scenarios, определение бизнес-транзакций, параметризация</li>
+                            <li><strong>4. Настройка профилей нагрузки:</strong> ramp-up, steady-state, peak load, ramp-down</li>
+                            <li><strong>5. Выполнение тестов:</strong> smoke test, load test, stress test, endurance/soak test, spike test</li>
+                            <li><strong>6. Мониторинг:</strong> время отклика, CPU/память, пропускная способность, база данных, ошибки</li>
+                            <li><strong>7. Анализ результатов:</strong> сравнение с требованиями, анализ графиков, идентификация bottlenecks</li>
+                            <li><strong>8. Оптимизация:</strong> внесение изменений, настройка конфигурации, повторное тестирование</li>
+                            <li><strong>9. Документирование:</strong> отчет, проблемы, рекомендации, baseline метрики</li>
+                        </ul>
+
+                        <h3>Ключевые метрики:</h3>
+                        <ul>
+                            <li>Response Time, Throughput (TPS), Concurrent Users, Error Rate, Resource Utilization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 21-24 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q21">
+                <label for="q21" class="accordion-header">
+                    <span class="question-number">21-24.</span>
+                    <span class="question-text">Виды функционального тестирования. Испытание ИС. Интеграционное тестирование. Тестирование производительности и сборки</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>21. Виды функционального тестирования:</h3>
+                        <ul>
+                            <li><strong>Unit Testing</strong> — тестирование отдельных модулей</li>
+                            <li><strong>Integration Testing</strong> — проверка взаимодействия модулей</li>
+                            <li><strong>System Testing</strong> — тестирование системы в целом</li>
+                            <li><strong>Acceptance Testing</strong> — приемочное тестирование (альфа/бета)</li>
+                            <li><strong>Regression Testing</strong> — проверка после изменений</li>
+                            <li><strong>Smoke Testing</strong> — базовая проверка основных функций</li>
+                            <li><strong>Sanity Testing</strong> — проверка конкретной функциональности</li>
+                        </ul>
+
+                        <h3>22. Испытание ИС на этапах подготовки к эксплуатации:</h3>
+                        <ul>
+                            <li><strong>Предварительные испытания</strong> — на тестовой среде, проверка готовности</li>
+                            <li><strong>Опытная эксплуатация</strong> — в реальных условиях с ограниченным кругом пользователей</li>
+                            <li><strong>Приемочные испытания</strong> — заказчиком, проверка соответствия требованиям</li>
+                            <li><strong>Промышленная эксплуатация</strong> — полноценное использование</li>
+                        </ul>
+
+                        <h3>23. Цели интеграционного тестирования:</h3>
+                        <ul>
+                            <li>Проверка взаимодействия между компонентами/модулями</li>
+                            <li>Выявление проблем на интерфейсах модулей</li>
+                            <li>Проверка передачи данных между компонентами</li>
+                            <li>Тестирование интеграции с внешними системами</li>
+                            <li>Обнаружение проблем архитектуры</li>
+                        </ul>
+
+                        <h3>24. Тестирование производительности и сборки:</h3>
+                        <ul>
+                            <li><strong>Тестирование производительности:</strong> Load, Stress, Endurance, Spike, Scalability testing</li>
+                            <li><strong>Тестирование сборки (Build Verification):</strong> проверка базовой работоспособности новой сборки, smoke тесты для принятия решения о дальнейшем тестировании</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 25 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q25">
+                <label for="q25" class="accordion-header">
+                    <span class="question-number">25.</span>
+                    <span class="question-text">Определите жизненный цикл дефекта. Тестовый отчет дефектов</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>Жизненный цикл дефекта:</h3>
+                        <ul>
+                            <li><strong>New</strong> — дефект создан тестировщиком</li>
+                            <li><strong>Assigned</strong> — назначен разработчику</li>
+                            <li><strong>Open</strong> — разработчик начал работу</li>
+                            <li><strong>Fixed</strong> — разработчик исправил</li>
+                            <li><strong>Pending Retest</strong> — ожидает проверки</li>
+                            <li><strong>Retest</strong> — тестировщик проверяет</li>
+                            <li><strong>Verified</strong> — исправление подтверждено</li>
+                            <li><strong>Closed</strong> — дефект закрыт</li>
+                            <li><strong>Reopened</strong> — появился снова</li>
+                            <li><strong>Rejected/Duplicate/Deferred</strong> — альтернативные статусы</li>
+                        </ul>
+
+                        <h3>Отчет дефектов содержит:</h3>
+                        <ul>
+                            <li><strong>Идентификация:</strong> ID, название, дата, автор, версия ПО</li>
+                            <li><strong>Классификация:</strong> Severity (Blocker/Critical/Major/Minor/Trivial), Priority (High/Medium/Low), тип, статус</li>
+                            <li><strong>Описание:</strong> краткое и детальное описание, шаги воспроизведения, ожидаемый vs фактический результат</li>
+                            <li><strong>Окружение:</strong> ОС, браузер, конфигурация, данные</li>
+                            <li><strong>Дополнительно:</strong> вложения (скриншоты, логи), связи, комментарии, история</li>
+                            <li><strong>Управление:</strong> назначено на, целевая версия, компонент, затраченное время</li>
+                        </ul>
+
+                        <h3>Метрики:</h3>
+                        <ul>
+                            <li>Общее количество, распределение по severity/priority/статусам, скорость обнаружения/исправления</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 26-30 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q26">
+                <label for="q26" class="accordion-header">
+                    <span class="question-number">26-30.</span>
+                    <span class="question-text">Тестирование интерфейсов. Инструменты. Принципы интеграционного тестирования. Задачи системного тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>26. Назначение тестирования интерфейсов:</h3>
+                        <ul>
+                            <li>Проверка взаимодействия между компонентами через интерфейсы</li>
+                            <li>Тестирование API (REST, SOAP, GraphQL)</li>
+                            <li>Проверка пользовательского интерфейса (UI)</li>
+                            <li>Тестирование интерфейсов с базами данных</li>
+                            <li>Проверка интеграции с внешними системами</li>
+                        </ul>
+
+                        <h3>27. Инструментальные средства тестирования:</h3>
+                        <ul>
+                            <li><strong>Unit Testing:</strong> JUnit, NUnit, pytest, Jest</li>
+                            <li><strong>UI Testing:</strong> Selenium, Cypress, Playwright, Puppeteer</li>
+                            <li><strong>API Testing:</strong> Postman, REST Assured, SoapUI</li>
+                            <li><strong>Performance:</strong> JMeter, LoadRunner, Gatling</li>
+                            <li><strong>Mobile:</strong> Appium, Espresso, XCUITest</li>
+                            <li><strong>CI/CD:</strong> Jenkins, GitLab CI, GitHub Actions</li>
+                        </ul>
+
+                        <h3>28. Принципы интеграционного тестирования:</h3>
+                        <ul>
+                            <li><strong>Инкрементальность</strong> — постепенное добавление и тестирование компонентов</li>
+                            <li><strong>Изоляция</strong> — использование заглушек и драйверов для изоляции тестируемых модулей</li>
+                            <li><strong>Стратегия интеграции</strong> — Top-Down, Bottom-Up, Big Bang, Sandwich</li>
+                            <li><strong>Фокус на интерфейсах</strong> — особое внимание точкам взаимодействия</li>
+                            <li><strong>Раннее начало</strong> — интеграционное тестирование начинается параллельно с модульным</li>
+                        </ul>
+
+                        <h3>29. Особенности для ООП и процедурного программирования:</h3>
+                        <ul>
+                            <li><strong>ООП:</strong> тестирование на уровне классов, проверка наследования и полиморфизма, интеграция объектов</li>
+                            <li><strong>Процедурное:</strong> тестирование на уровне функций/процедур, проверка вызовов функций, интеграция модулей</li>
+                        </ul>
+
+                        <h3>30. Задачи системного тестирования:</h3>
+                        <ul>
+                            <li>Проверка системы в целом на соответствие требованиям</li>
+                            <li>Тестирование end-to-end сценариев</li>
+                            <li>Проверка нефункциональных требований (производительность, безопасность, удобство)</li>
+                            <li>Тестирование на целевом окружении</li>
+                            <li>Проверка взаимодействия всех компонентов системы</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 31-34 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q31">
+                <label for="q31" class="accordion-header">
+                    <span class="question-number">31-34.</span>
+                    <span class="question-text">Принципы регрессионного тестирования. Виды регрессионного тестирования</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>31. Принципы регрессионного тестирования:</h3>
+                        <ul>
+                            <li><strong>Непрерывность</strong> — выполняется после каждого изменения, встроено в CI/CD</li>
+                            <li><strong>Полнота покрытия</strong> — проверка критичных функций, измененных и связанных областей</li>
+                            <li><strong>Приоритизация</strong> — высокий приоритет для критичной функциональности</li>
+                            <li><strong>Селективность</strong> — выбор тестов на основе анализа изменений (impact analysis)</li>
+                            <li><strong>Автоматизация</strong> — максимальная автоматизация для быстрой обратной связи</li>
+                            <li><strong>Поддержка набора</strong> — регулярный пересмотр и обновление тест-кейсов</li>
+                            <li><strong>Быстрая обратная связь</strong> — минимизация времени выполнения</li>
+                            <li><strong>Анализ воздействия</strong> — оценка влияния изменений, трассируемость</li>
+                            <li><strong>Стабильность</strong> — тесты должны быть надежными (не flaky)</li>
+                        </ul>
+
+                        <h3>34. Цели и задачи регрессионного тестирования:</h3>
+                        <p><strong>Цели:</strong></p>
+                        <ul>
+                            <li>Убедиться, что изменения не нарушили существующую функциональность</li>
+                            <li>Проверить, что исправления не привели к новым проблемам</li>
+                            <li>Подтвердить стабильность системы после модификаций</li>
+                            <li>Обнаружить побочные эффекты изменений</li>
+                        </ul>
+
+                        <p><strong>Задачи:</strong></p>
+                        <ul>
+                            <li>Повторное выполнение ранее пройденных тест-кейсов</li>
+                            <li>Проверка затронутых областей кода</li>
+                            <li>Тестирование взаимодействия новых и существующих компонентов</li>
+                            <li>Верификация исправленных дефектов</li>
+                            <li>Поддержание актуального набора тестов</li>
+                        </ul>
+
+                        <h3>Виды регрессионного тестирования:</h3>
+
+                        <h3>По объему:</h3>
+                        <ul>
+                            <li><strong>Полное (Complete)</strong> — выполнение всех тестов</li>
+                            <li><strong>Частичное (Partial)</strong> — подмножество на основе анализа изменений</li>
+                            <li><strong>Выборочное (Selective)</strong> — по приоритету и риску</li>
+                        </ul>
+
+                        <h3>По типу изменений:</h3>
+                        <ul>
+                            <li><strong>Bug Regression</strong> — проверка исправленных багов</li>
+                            <li><strong>Conversion/Port</strong> — при переносе на другую платформу</li>
+                            <li><strong>Configuration</strong> — различные конфигурации</li>
+                        </ul>
+
+                        <h3>По автоматизации:</h3>
+                        <ul>
+                            <li><strong>Автоматизированное</strong> — с помощью инструментов, в CI/CD</li>
+                            <li><strong>Ручное</strong> — для сложных сценариев, UI/UX</li>
+                        </ul>
+
+                        <h3>По времени:</h3>
+                        <ul>
+                            <li><strong>Continuous</strong> — после каждого изменения</li>
+                            <li><strong>Progressive</strong> — изменения влияют на спецификацию</li>
+                            <li><strong>Corrective</strong> — спецификация не меняется</li>
+                        </ul>
+
+                        <h3>По уровню:</h3>
+                        <ul>
+                            <li>Unit, Integration, System, Acceptance Regression</li>
+                        </ul>
+
+                        <h3>Специализированные:</h3>
+                        <ul>
+                            <li><strong>Smoke Regression</strong> — базовая проверка</li>
+                            <li><strong>Sanity Regression</strong> — целенаправленная проверка</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questions 32-33, 35-37 -->
+            <div class="accordion-item">
+                <input type="checkbox" id="q32">
+                <label for="q32" class="accordion-header">
+                    <span class="question-number">32-33, 35-37.</span>
+                    <span class="question-text">Издержки тестирования. Автоматизация. Документация. Оценки покрытия. Средства автоматизации</span>
+                    <span class="accordion-icon">▼</span>
+                </label>
+                <div class="accordion-content">
+                    <div class="accordion-content-inner">
+                        <h3>32. Издержки тестирования и автоматизация:</h3>
+                        <ul>
+                            <li><strong>Издержки:</strong> трудозатраты, время выполнения, стоимость инструментов, инфраструктура, обучение</li>
+                            <li><strong>Методы автоматизации:</strong> инструменты для модульного, UI, API, нагрузочного тестирования; CI/CD интеграция; test frameworks</li>
+                        </ul>
+
+                        <h3>33. Требования к документации тестирования:</h3>
+                        <ul>
+                            <li><strong>Полнота</strong> — покрытие всех аспектов тестирования</li>
+                            <li><strong>Ясность</strong> — понятное изложение для всех заинтересованных сторон</li>
+                            <li><strong>Актуальность</strong> — соответствие текущему состоянию продукта</li>
+                            <li><strong>Структурированность</strong> — логичная организация информации</li>
+                            <li><strong>Трассируемость</strong> — связь с требованиями и кодом</li>
+                            <li><strong>Воспроизводимость</strong> — возможность повторить тесты по документации</li>
+                        </ul>
+
+                        <h3>35. Оценки покрытия программы и проекта:</h3>
+                        <ul>
+                            <li><strong>Code Coverage:</strong> Statement (C0), Branch (C1), Condition (C2), Path Coverage</li>
+                            <li><strong>Requirements Coverage:</strong> процент покрытых требований тестами</li>
+                            <li><strong>Functional Coverage:</strong> покрытие функциональности</li>
+                            <li><strong>Risk Coverage:</strong> покрытие критичных областей</li>
+                            <li><strong>Метрики:</strong> (Покрытые элементы / Всего элементов) × 100%</li>
+                        </ul>
+
+                        <h3>36. Преимущества и недостатки автоматизации:</h3>
+                        <p><strong>Преимущества:</strong></p>
+                        <ul>
+                            <li>Быстрое выполнение тестов, возможность частого запуска</li>
+                            <li>Сокращение трудозатрат в долгосрочной перспективе</li>
+                            <li>Повышение покрытия, стабильность результатов</li>
+                            <li>Возможность ночного запуска, интеграция с CI/CD</li>
+                        </ul>
+
+                        <p><strong>Недостатки:</strong></p>
+                        <ul>
+                            <li>Высокие начальные инвестиции (время, деньги)</li>
+                            <li>Требует поддержки и обновления</li>
+                            <li>Не заменяет исследовательское тестирование</li>
+                            <li>Ложные срабатывания (flaky tests)</li>
+                            <li>Не все сценарии можно автоматизировать</li>
+                        </ul>
+
+                        <h3>37. Известные средства автоматизации:</h3>
+
+                        <h3>Функциональное тестирование:</h3>
+                        <ul>
+                            <li><strong>Web:</strong> Selenium, Cypress, Playwright, Puppeteer, TestCafe</li>
+                            <li><strong>Mobile:</strong> Appium, Espresso, XCUITest, Detox</li>
+                            <li><strong>Desktop:</strong> WinAppDriver, Sikuli</li>
+                        </ul>
+
+                        <h3>Модульное тестирование:</h3>
+                        <ul>
+                            <li><strong>Java:</strong> JUnit, TestNG, Mockito</li>
+                            <li><strong>Python:</strong> pytest, unittest</li>
+                            <li><strong>JavaScript:</strong> Jest, Mocha, Jasmine</li>
+                            <li><strong>C#:</strong> NUnit, xUnit, MSTest</li>
+                        </ul>
+
+                        <h3>API тестирование:</h3>
+                        <ul>
+                            <li>Postman, REST Assured, SoapUI, Karate DSL, Insomnia</li>
+                        </ul>
+
+                        <h3>Нагрузочное тестирование:</h3>
+                        <ul>
+                            <li>Apache JMeter, LoadRunner, Gatling, K6, Locust</li>
+                        </ul>
+
+                        <h3>BDD фреймворки:</h3>
+                        <ul>
+                            <li>Cucumber, SpecFlow, Behave</li>
+                        </ul>
+
+                        <h3>CI/CD:</h3>
+                        <ul>
+                            <li>Jenkins, GitLab CI, GitHub Actions, CircleCI, Travis CI</li>
+                        </ul>
+
+                        <h3>Управление тестами:</h3>
+                        <ul>
+                            <li>TestRail, Zephyr, qTest, Xray</li>
+                        </ul>
+
+                        <h3>Баг-трекинг:</h3>
+                        <ul>
+                            <li>Jira, Bugzilla, Mantis, Redmine</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <footer>
+            <p>© 2025 Материалы для подготовки к экзамену по тестированию ПО</p>
+            <p style="margin-top: 0.5rem; font-size: 0.85rem;">Нажмите на вопрос, чтобы увидеть развернутый ответ</p>
+        </footer>
+    </div>
+</body>
+</html>
