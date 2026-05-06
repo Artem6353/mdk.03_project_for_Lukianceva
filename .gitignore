@@ -1,1 +1,15 @@
-(accounts/admin.py, registry/admin.py)
+```gitignore
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*
+```
