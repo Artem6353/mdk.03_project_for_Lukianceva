@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Patient, Appointment, Schedule
-from accounts.models import User
 
 
 class LoginForm(AuthenticationForm):
