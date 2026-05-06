@@ -4,7 +4,6 @@ from django.contrib import messages
 from django.db.models import Q
 from .models import Patient, Doctor, Appointment, Schedule
 from .forms import PatientRegistrationForm, PatientSearchForm, AppointmentForm
-from accounts.models import User
 
 
 @login_required
