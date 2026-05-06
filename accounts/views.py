@@ -68,15 +68,11 @@ def patient_cabinet_view(request):
     
     # Получаем профиль пациента
     from registry.models import Patient
-    patient_profile, created = Patient.objects.get_or_create(
-        user=request.user,
-        defaults={
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'middle_name': request.user.middle_name,
-            'phone': request.user.phone,
-        }
-    )
+    try:
+        patient_profile = Patient.objects.get(user=request.user)
+    except Patient.DoesNotExist:
+        messages.error(request, 'Профиль пациента не найден. Обратитесь к администратору.')
+        return redirect('registry:dashboard')
     
     # Получаем записи на прием
     appointments = patient_profile.appointments.all().order_by('-appointment_date', '-appointment_time')
