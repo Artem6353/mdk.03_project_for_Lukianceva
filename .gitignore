@@ -1,29 +1,32 @@
-```gitignore
+```
 # Python
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Databases
-*.sqlite3
-*.db
+# Logs and temp files
+*.log
+*.tmp
 
-# Dependencies
-venv/
-.venv/
+# Environment
 .env
 .env.local
 *.env.*
 
-# Logs
-*.log
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# Coverage
-.coverage
-coverage/
-htmlcov/
+# Dependencies
+.venv/
+venv/
+node_modules/
 
-# Migration files
-*/migrations/__pycache__/
+# Build artifacts
+dist/
+build/
+target/
 ```
