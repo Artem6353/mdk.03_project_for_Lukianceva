@@ -10,6 +10,16 @@ class Patient(models.Model):
         ('F', 'Женский'),
     )
     
+    # Связь с пользователем (для пациентов, регистрирующихся через сайт)
+    user = models.OneToOneField(
+        'accounts.User',
+        on_delete=models.CASCADE,
+        related_name='patient_profile',
+        verbose_name='Пользователь',
+        null=True,
+        blank=True,
+    )
+    
     # Валидаторы согласно техническому заданию 2.4.1
     cyrillic_validator = RegexValidator(
         regex=r'^[а-яА-ЯёЁ\s]+$',
