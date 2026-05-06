@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Пациенты - Мед-Регистр{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>👥 Пациенты</h2>
+    <a href="{% url 'registry:patient_create' %}" class="btn btn-primary">➕ Добавить пациента</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-10">
+                {{ search_form.search_query }}
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-success w-100">🔍 Поиск</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Дата рождения</th>
+                    <th>Телефон</th>
+                    <th>Полис ОМС</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    <td>{{ patient.full_name }}</td>
+                    <td>{{ patient.date_of_birth|date:"d.m.Y" }}</td>
+                    <td>{{ patient.phone }}</td>
+                    <td>{{ patient.oms_number }}</td>
+                    <td>
+                        <a href="{% url 'registry:patient_detail' patient.pk %}" class="btn btn-sm btn-info">📄 Просмотр</a>
+                        <a href="{% url 'registry:patient_edit' patient.pk %}" class="btn btn-sm btn-warning">✏️ Редактировать</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Пациенты не найдены</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
