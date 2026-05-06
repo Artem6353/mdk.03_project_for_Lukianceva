@@ -1,43 +1,20 @@
-```
+```gitignore
 # Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
+*.pyc
+*.pyo
+*.pyd
 
-# Database
-db.sqlite3
+# Databases
+*.sqlite3
+*.db
 
-# Environment
+# Dependencies
+venv/
+.venv/
 .env
 .env.local
-.env.*
-.venv/
-venv/
-ENV/
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
+*.env.*
 
 # Logs
 *.log
@@ -46,4 +23,7 @@ ENV/
 .coverage
 coverage/
 htmlcov/
+
+# Migration files
+*/migrations/__pycache__/
 ```

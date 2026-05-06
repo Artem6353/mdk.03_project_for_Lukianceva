@@ -51,20 +51,21 @@ class PatientRegistrationForm(UserCreationForm):
             user.save()
             # Создаем профиль пациента
             from registry.models import Patient
-            Patient.objects.get_or_create(
-                user=user,
-                defaults={
-                    'first_name': user.first_name,
-                    'last_name': user.last_name,
-                    'middle_name': user.middle_name,
-                    'phone': user.phone,
-                    'date_of_birth': self.cleaned_data.get('date_of_birth'),
-                    'gender': self.cleaned_data.get('gender'),
-                    'oms_number': self.cleaned_data.get('oms_number'),
-                    'snils': self.cleaned_data.get('snils'),
-                    'address': self.cleaned_data.get('address'),
-                }
-            )
+            # Используем filter().first() вместо get_or_create с user для избежания FieldError
+            patient = Patient.objects.filter(user=user).first()
+            if not patient:
+                Patient.objects.create(
+                    user=user,
+                    first_name=user.first_name,
+                    last_name=user.last_name,
+                    middle_name=user.middle_name or '',
+                    phone=user.phone,
+                    date_of_birth=self.cleaned_data.get('date_of_birth'),
+                    gender=self.cleaned_data.get('gender'),
+                    oms_number=self.cleaned_data.get('oms_number'),
+                    snils=self.cleaned_data.get('snils') or '',
+                    address=self.cleaned_data.get('address') or '',
+                )
         return user
 
 
