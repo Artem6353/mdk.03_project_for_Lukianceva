@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}Новая запись - Мед-Регистр{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📅 Запись на прием</h2>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label for="{{ form.patient.id_for_label }}" class="form-label">{{ form.patient.label }}</label>
+                {{ form.patient }}
+                {% if form.patient.errors %}<div class="text-danger">{{ form.patient.errors }}</div>{% endif %}
+            </div>
+            
+            <div class="mb-3">
+                <label for="{{ form.doctor.id_for_label }}" class="form-label">{{ form.doctor.label }}</label>
+                {{ form.doctor }}
+                {% if form.doctor.errors %}<div class="text-danger">{{ form.doctor.errors }}</div>{% endif %}
+            </div>
+            
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.appointment_date.id_for_label }}" class="form-label">{{ form.appointment_date.label }}</label>
+                    {{ form.appointment_date }}
+                    {% if form.appointment_date.errors %}<div class="text-danger">{{ form.appointment_date.errors }}</div>{% endif %}
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.appointment_time.id_for_label }}" class="form-label">{{ form.appointment_time.label }}</label>
+                    {{ form.appointment_time }}
+                    {% if form.appointment_time.errors %}<div class="text-danger">{{ form.appointment_time.errors }}</div>{% endif %}
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">💾 Создать запись</button>
+                <a href="{% url 'registry:appointment_list' %}" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

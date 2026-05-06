@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Главная - Мед-Регистр{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📊 Панель управления</h2>
+
+<div class="row">
+    {% if user.role == 'registrator' or user.role == 'admin' %}
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <h3>{{ patients_count|default:0 }}</h3>
+                <p>Всего пациентов</p>
+                <a href="{% url 'registry:patient_list' %}" class="btn btn-light btn-sm">Посмотреть</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <h3>{{ today_appointments|default:0 }}</h3>
+                <p>Записей на сегодня</p>
+                <a href="{% url 'registry:appointment_list' %}" class="btn btn-light btn-sm">Посмотреть</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <h3>📋</h3>
+                <p>Расписание врачей</p>
+                <a href="{% url 'registry:schedule_list' %}" class="btn btn-light btn-sm">Открыть</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if user.role == 'doctor' %}
+    <div class="col-md-6">
+        <div class="card bg-warning">
+            <div class="card-body">
+                <h4>Мои предстоящие приемы</h4>
+                {% if my_appointments %}
+                <ul class="list-group">
+                    {% for apt in my_appointments %}
+                    <li class="list-group-item">{{ apt.patient }} - {{ apt.appointment_date }} {{ apt.appointment_time }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Нет запланированных приемов</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">Быстрые действия</div>
+            <div class="card-body">
+                {% if user.role == 'registrator' or user.role == 'admin' %}
+                <a href="{% url 'registry:patient_create' %}" class="btn btn-primary me-2">➕ Регистрация пациента</a>
+                <a href="{% url 'registry:appointment_create' %}" class="btn btn-success me-2">📅 Записать на прием</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

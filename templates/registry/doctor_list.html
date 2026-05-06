@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Врачи - Мед-Регистр{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">👨‍⚕️ Врачи</h2>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Специальность</th>
+                    <th>Кабинет</th>
+                    <th>Контакты</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                <tr>
+                    <td>{{ doctor.user.get_full_name }}</td>
+                    <td>{{ doctor.specialty }}</td>
+                    <td>{{ doctor.cabinet|default:"-" }}</td>
+                    <td>{{ doctor.user.email }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">Врачи не найдены</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

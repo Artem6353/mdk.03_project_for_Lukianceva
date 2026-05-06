@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Запись №{{ appointment.pk }} - Мед-Регистр{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📄 Информация о записи</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">Детали записи</div>
+            <div class="card-body">
+                <p><strong>Пациент:</strong> {{ appointment.patient.full_name }}</p>
+                <p><strong>Врач:</strong> {{ appointment.doctor }}</p>
+                <p><strong>Дата и время:</strong> {{ appointment.appointment_date|date:"d.m.Y" }} {{ appointment.appointment_time }}</p>
+                <p><strong>Статус:</strong> {{ appointment.get_status_display }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">Информация о пациенте</div>
+            <div class="card-body">
+                <p><strong>Телефон:</strong> {{ appointment.patient.phone }}</p>
+                <p><strong>Полис ОМС:</strong> {{ appointment.patient.oms_number }}</p>
+                {% if appointment.complaint %}
+                <p><strong>Жалобы:</strong> {{ appointment.complaint }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'registry:appointment_list' %}" class="btn btn-secondary">← Назад к списку</a>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Записи на прием - Мед-Регистр{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>📅 Записи на прием</h2>
+    {% if user.role == 'registrator' or user.role == 'admin' %}
+    <a href="{% url 'registry:appointment_create' %}" class="btn btn-primary">➕ Создать запись</a>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Пациент</th>
+                    <th>Врач</th>
+                    <th>Дата и время</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for apt in appointments %}
+                <tr>
+                    <td>{{ apt.patient.full_name }}</td>
+                    <td>{{ apt.doctor }}</td>
+                    <td>{{ apt.appointment_date|date:"d.m.Y" }} {{ apt.appointment_time }}</td>
+                    <td>
+                        <span class="badge bg-{% if apt.status == 'scheduled' %}primary{% elif apt.status == 'completed' %}success{% elif apt.status == 'cancelled' %}danger{% else %}warning{% endif %}">
+                            {{ apt.get_status_display }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{% url 'registry:appointment_detail' apt.pk %}" class="btn btn-sm btn-info">📄</a>
+                        {% if user.role == 'registrator' or user.role == 'admin' and apt.status == 'scheduled' %}
+                        <a href="{% url 'registry:appointment_cancel' apt.pk %}" class="btn btn-sm btn-danger" onclick="return confirm('Отменить запись?')">❌</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">Записей не найдено</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
