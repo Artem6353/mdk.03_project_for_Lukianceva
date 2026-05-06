@@ -9,6 +9,7 @@ class User(AbstractUser):
         ('registrator', 'Медицинский регистратор'),
         ('doctor', 'Врач'),
         ('admin', 'Администратор'),
+        ('patient', 'Пациент'),
     )
     
     role = models.CharField(
@@ -22,6 +23,11 @@ class User(AbstractUser):
         blank=True,
         null=True,
         verbose_name='Телефон'
+    )
+    middle_name = models.CharField(
+        max_length=30,
+        blank=True,
+        verbose_name='Отчество'
     )
     
     class Meta:
