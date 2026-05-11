@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 16-летием, Надя! 🎉</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            /* Добавлены отступы для небольших экранов */
+            padding: 20px;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #a1c4fd, #c2e9fb);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Comfortaa', cursive;
+            /* Разрешаем вертикальный скролл, блокируем горизонтальный */
+            overflow-x: hidden; 
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 50px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            max-width: 450px;
+            width: 100%;
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideUp 1s forwards ease-out;
+            /* Убедимся, что карточка не выходит за пределы padding */
+            box-sizing: border-box; 
+        }
+
+        @keyframes slideUp {
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .age {
+            font-size: 6em;
+            font-weight: bold;
+            color: #fff;
+            margin: 0;
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff4b8b;
+            font-size: 3em;
+            margin: 10px 0 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.05);
+        }
+
+        p {
+            color: #4a4a4a;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-bottom: 35px;
+            font-weight: 700;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff4b8b, #ff9a9e);
+            border: none;
+            padding: 18px 35px;
+            border-radius: 50px;
+            color: white;
+            font-family: 'Comfortaa', cursive;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 75, 139, 0.4);
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        button:hover {
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 75, 139, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="age">16</div>
+        <h1>С Днем Рождения,<br>Надя!</h1>
+        <p>Пусть этот возраст принесет тебе океан вдохновения, верных друзей и море улыбок! Мечтай по-крупному, будь самой счастливой и помни, что твоя лучшая история только начинается!</p>
+        <button onclick="celebrate()">Нажми для волшебства ✨</button>
+    </div>
+
+    <script>
+        function celebrate() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+        
+        window.onload = function() {
+            setTimeout(celebrate, 500);
+        }
+    </script>
+</body>
+</html>
